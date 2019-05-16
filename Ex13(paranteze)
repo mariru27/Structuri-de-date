@@ -1,0 +1,63 @@
+#include<iostream>
+
+char stiva[50];
+int lungime = -1;
+
+void push(char c) {
+	stiva[lungime] = c;
+}
+
+void pop() {
+	if (lungime == 0) {
+		stiva[lungime] = ' ';
+	}
+	else {
+		stiva[lungime] = ' ';
+		lungime--;
+	}
+}
+
+
+void paranteze() {
+	char sir[20];
+	std::cout << "Introdu sirul de caractere:";
+	std::cin >> sir;
+	bool solutie = true;
+	if (strlen(sir) == 1)
+		std::cout << "incorect";
+	else{
+		for (int i = 0; i < strlen(sir); i++) {
+			if (sir[i] == '{' || sir[i] == '(' || sir[i] == '[') {
+				lungime++;
+				push(sir[i]);
+			}
+			int k = 0;
+			if (sir[i] == '}' || sir[i] == ')' || sir[i] == ']') {
+				if (stiva[lungime] == '{' && sir[i] == '}') {
+					pop();
+					k = 1;
+				}
+				if (stiva[lungime] == '(' && sir[i] == ')') {
+					pop();
+					k = 1;
+				}
+				if (stiva[lungime] == '[' && sir[i] == ']') {
+					pop();
+					k = 1;
+				}
+				if (k == 0)
+					solutie = false;
+			}
+		}
+		if (solutie == true)
+			std::cout << "corect";
+		else
+			std::cout << "incorect";
+	}
+}
+
+void main() {
+	paranteze();
+	std::cout << std::endl;
+	system("pause");
+}
