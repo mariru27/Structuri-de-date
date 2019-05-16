@@ -1,0 +1,65 @@
+#include<iostream>
+
+int n;
+struct ora {
+	int a;
+	int b;
+	int diferenta;
+};
+ora t[10];
+int vec[30]{};
+
+void problemaSpectacol() {
+	std::cout << "Introdu n:";
+	std::cin >> n;
+	std::cout << "Introdu valorile:\n";
+
+	for (int i = 0; i < n; i++) {
+		std::cin >> t[i].a;
+		std::cin >> t[i].b;
+		t[i].diferenta = abs(t[i].a - t[i].b);
+	}
+	bool solutie = false;
+	int k = 0;
+	int min = 10000;
+	while (solutie == false) {
+		min = 10000;
+		solutie = true;
+		int indice = 0;
+		//calculam minimul si salvam pozitia lui
+		//calculam care e cea mai mica diferenta de ora intre 2 spectacole
+		for (int i = 0; i < n; i++) {
+			if ((min > t[i].diferenta) && (t[i].diferenta != -1)) {
+				min = t[i].diferenta;
+				indice = i;
+				solutie = false;
+			}
+		}
+		t[indice].diferenta = -1;
+		bool val = true;
+		//vericicam daca mai sunt si alte spectacole planificate la acea ora
+		for (int i = t[indice].a; i <= t[indice].b; i++) {
+			if (vec[i] != 0)
+				val = false;
+		}
+		//daca nu este planificat niciun spectacol, vom adauga spectacolul
+		if (val == true) {
+			k++;
+			vec[t[indice].a] = k;
+			vec[t[indice].b] = k;
+		}
+	}
+	std::cout << "Numarul maxim de spectacole care nu se suprapun:\n";
+	for (int i = 0; i < n; i++) {
+		if ((vec[t[i].a]==vec[t[i].b]) && (vec[t[i].a]!= 0)) {
+			std::cout << t[i].a << "," << t[i].b << std::endl;
+		}
+	}
+}
+
+
+void main() {
+	problemaSpectacol();
+	std::cout << std::endl;
+	system("pause");
+}
