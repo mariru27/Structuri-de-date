@@ -1,0 +1,31 @@
+#include<iostream>
+
+bool palindrom(char sir[],int n,int i) {
+	if (i == n/2) {
+		return true;
+	}
+	else {
+		char x = sir[n - i];
+		char y = sir[i];
+		if (sir[n - i] == sir[i]) {
+			return palindrom(sir, n, i + 1);
+		}
+		else {
+			return false;
+		}
+	}
+}
+
+
+void main() {
+	char a[20]{ "marram" };
+	char sir[20];
+	std::cout << "Introdu sirul de caractere::";
+	std::cin >> sir;
+	if (palindrom(sir, strlen(sir)-1, 0) == true)
+		std::cout << "E palindorm";
+	else
+		std::cout << "Nu e palindrom";
+	std::cout << std::endl;
+	system("pause");
+}
