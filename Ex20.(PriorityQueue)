@@ -1,0 +1,102 @@
+#include<iostream>
+
+class PQueue {
+private:
+	int* t;
+	int lungime;
+public:
+	PQueue(int* v, int n) {
+		t = new int[10];
+		lungime = n;
+		for (int i = 0; i < n; i++) {
+			t[i] = v[i];
+		}
+	}
+
+	void push(int val) {
+		bool find = false;
+		int currentVal = t[1];
+		int currentVal1 = t[1];
+		if (val < t[0]) {
+			currentVal = t[0];
+			t[0] = val;
+			for (int i = 1; i < lungime + 1; i++) {
+				currentVal1 = t[i];
+				t[i] = currentVal;
+				currentVal = currentVal1;
+			}
+			lungime++;
+		}
+		else {
+			if (val > t[lungime - 1]) {
+				t[lungime] = val;
+				lungime++;
+			}
+			else {
+				for (int i = 0; i < lungime; i++) {
+					currentVal1 = t[i + 1];
+					if (find == true) {
+						t[i + 1] = currentVal;
+						currentVal = currentVal1;
+						continue;
+					}
+					currentVal = currentVal1;
+					if ((t[i] < val && t[i + 1] > val) || t[i] == val) {
+						find = true;
+						t[i + 1] = val;
+					}
+				}
+				lungime++;
+			}
+		}
+	}
+
+	int* getQueue() {
+		return t;
+	}
+	
+	int getElement(int i) {
+		return t[i];
+	}
+
+	void setElement(int i, int val) {
+		t[i] = val;
+	}
+
+	void print() {
+		for (int i = 0; i < lungime; i++) {
+			std::cout << t[i] << " ";
+		}
+	}
+};
+
+
+void sort(int *t, int n) {
+	int val = 0;
+	for (int i = 0; i < n ; i++) {
+		for (int j = i; j < n; j++) {
+			if (t[i] > t[j]) {
+				val = t[i];
+				t[i] = t[j];
+				t[j] = val;
+			}
+		}
+	}
+}
+
+int main() {
+	int t[10]{ 3,6,1,10,21,50,12 };
+	int n = 7;
+	sort(t, n);
+	PQueue q(t, n);
+	q.print();
+	q.push(53);
+	q.push(10);
+	q.push(1);
+	q.push(0);
+	std::cout << std::endl;
+	q.print();
+	std::cout << std::endl;
+	system("pause");
+	return 0;
+}
