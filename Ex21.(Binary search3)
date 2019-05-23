@@ -1,0 +1,59 @@
+#include<iostream>
+
+int t[25]{ 1,2,3,4,5,6,7,8,9,10,22,34,38,39,40,43,47,49,50,55,60,61,62,64 };
+int n = 24;
+int in = 0, fs = n, mij1 = 0, mij2 = 0;
+bool a = false;
+bool cautareBinara3(int in, int sf, int val) {
+	if (in+1 != sf) {
+		int dif = sf - in;
+		mij1 = (dif/3)+in;
+		mij2 = ((sf - mij1) / 2) + mij1;
+		if (mij1 + 1 == mij2) {
+			if (t[mij1] == val || t[mij2] == val || t[in] == val || t[sf] == val)
+				return true;
+			else
+				return false;
+		}
+		if (val < t[mij1]) {
+			sf = mij1;
+			if (a == true)
+				return true;
+			 a = cautareBinara3(in, sf, val);
+			 if (a == false)
+				 return false;
+
+		}
+		if (val > t[mij1] && val < t[mij2]) {
+			in = mij1;
+			sf = mij2;
+			if (a == true)
+				return true;
+			 a = cautareBinara3(in, sf, val);
+			 if (a == false)
+				 return false;
+		}
+		if (val > t[mij2] && val < t[sf]) {
+			in = mij2;
+			if (a == true)
+				return true;
+			a = cautareBinara3(in, sf, val);
+		}
+		if (val < t[in])
+			return false;
+		if (val > t[sf])
+			return false;
+	}
+}
+
+int main() {
+	bool b = cautareBinara3(0, 24-1, 43);
+	if (b != 0)
+		std::cout << "Numarul a fost gasit";
+	else
+		std::cout << "Numarul nu a fost gasit";
+	std::cout << std::endl;
+	std::cout << std::endl;
+	system("pause");
+	return 0;
+}
