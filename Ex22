@@ -1,0 +1,37 @@
+#include<iostream>
+
+int t1[25]{ 1,3,5,7,8,9,22,25,33 };
+int t2[25]{ 3,4,5,8,9,10,17,34,77 };
+int sol[25]{};
+int n = 9;
+
+void ex22() {
+	int i = 0, j = 0;
+	int k = -1;
+	while (i != n && j != n) {
+		if (t1[i] <= t2[j]) {
+			k++;
+			sol[k] = t1[i];
+			int h = n - 1;
+			if (i == h)
+				t1[i] == 10000;
+			else
+				i++;
+		}
+		else {
+			k++;
+			sol[k] = t2[j];
+			if (j == n - 1)
+				t2[j] = 10000;
+			else;
+				j++;
+		}
+	}
+}
+
+int main() {
+	ex22();
+	std::cout << std::endl;
+	system("pause");
+	return 0;
+}
