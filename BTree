@@ -1,0 +1,86 @@
+#include<iostream>
+
+class BTree {
+private:
+	class Node {
+	public:
+		int val;
+		Node *right, *left, *up;
+	};
+	Node *tree;
+public:
+	BTree(int *t, int n) {
+		Node *nod;
+		nod = new Node;
+		nod->left = NULL;
+		nod->right = NULL;
+		nod->val = t[0];
+		tree = nod;
+		nod->up = NULL;
+
+		int v1[10], v2[10];
+		int k1 = -1, k2 = -1;
+		
+		for (int i = 1; i <= n; i++) {
+			Node *nod;
+			nod = new Node;
+			Node *x;
+			nod->left = NULL;
+			nod->right = NULL;
+			nod->val = t[i];
+			x = tree;
+			while (x->left != NULL || x->right != NULL) {
+				if (x->val >= t[i] && x->left!=NULL) {
+					x = x->left;
+				}
+				if (x->val < t[i] && x->right != NULL) {
+					x = x->right;
+				}
+				if (x->val >= t[i] && x->left == NULL)
+					break;
+				if (x->val < t[i] && x->right == NULL)
+					break;
+			}
+			if (x->val >= t[i]) {
+				x->left = nod;
+				k1++;
+				v1[k1] = nod->val;
+				//std::cout << "Stanga " << x->val;
+			}
+			else {
+				x->right = nod;
+				k2++;
+				v2[k2] = nod->val;
+				//std::cout << "Dreapta " << x->val;
+			}
+
+			
+		}
+		//for (int i = 0; i <= k1; i++) {
+		//	std::cout << v1[i] << " ";
+		//}
+		//std::cout << std::endl;
+		//for (int i = 0; i <= k2; i++) {
+		//	std::cout << v2[i] << " ";
+		//}
+	}
+	//void printTree() {
+	//	Node *x , *y;
+	//	x = tree;
+	//	y = tree;
+	//	while (x->left == NULL && x->right == NULL && y->left == NULL && y->right == NULL) {
+	//		if (x->left != NULL) {
+
+	//			x = x->left;
+	//		}
+	//	}
+	//}
+};
+
+void main() {
+	int t[10]{ 8,4,7,3,2,10,22,9 };
+	int n = 7;
+	BTree tree(t, n);
+	std::cout << std::endl;
+	system("pause");
+}
