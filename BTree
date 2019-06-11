@@ -1,16 +1,22 @@
-#include<iostream>
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <algorithm>
 
 class BTree {
 private:
 	class Node {
 	public:
 		int val;
-		Node *right, *left, *up;
+		Node* right, * left, * up;
 	};
-	Node *tree;
+	Node* tree;
+	int n;
+	std::vector<Node*> path[20];
 public:
-	BTree(int *t, int n) {
-		Node *nod;
+	BTree(int* t, int n) {
+		Node* nod;
+		this->n = n;
 		nod = new Node;
 		nod->left = NULL;
 		nod->right = NULL;
@@ -18,19 +24,16 @@ public:
 		tree = nod;
 		nod->up = NULL;
 
-		int v1[10], v2[10];
-		int k1 = -1, k2 = -1;
-		
 		for (int i = 1; i <= n; i++) {
-			Node *nod;
+			Node* nod;
 			nod = new Node;
-			Node *x;
+			Node* x;
 			nod->left = NULL;
 			nod->right = NULL;
 			nod->val = t[i];
 			x = tree;
 			while (x->left != NULL || x->right != NULL) {
-				if (x->val >= t[i] && x->left!=NULL) {
+				if (x->val >= t[i] && x->left != NULL) {
 					x = x->left;
 				}
 				if (x->val < t[i] && x->right != NULL) {
@@ -43,44 +46,117 @@ public:
 			}
 			if (x->val >= t[i]) {
 				x->left = nod;
-				k1++;
-				v1[k1] = nod->val;
-				//std::cout << "Stanga " << x->val;
+				nod->up = x;
 			}
 			else {
 				x->right = nod;
-				k2++;
-				v2[k2] = nod->val;
-				//std::cout << "Dreapta " << x->val;
+				nod->up = x;
 			}
-
-			
 		}
-		//for (int i = 0; i <= k1; i++) {
-		//	std::cout << v1[i] << " ";
-		//}
-		//std::cout << std::endl;
-		//for (int i = 0; i <= k2; i++) {
-		//	std::cout << v2[i] << " ";
-		//}
 	}
-	//void printTree() {
-	//	Node *x , *y;
-	//	x = tree;
-	//	y = tree;
-	//	while (x->left == NULL && x->right == NULL && y->left == NULL && y->right == NULL) {
-	//		if (x->left != NULL) {
 
-	//			x = x->left;
-	//		}
-	//	}
-	//}
+	bool verificare(Node *x);
+
+	void parcurgerePostordine() {
+		std::cout << "Parcurgere in Postordine:\n";
+		std::stack<Node*> t;
+		t.push(tree);
+		Node* x = tree;
+		while (t.empty() == false) {
+			if (x->right != NULL && (verificare(x->right) == false) ) {
+				t.push(x->right);
+				path->push_back(x->right);
+			}
+			if (x->left != NULL && (verificare(x->left) == false) ) {
+				t.push(x->left);
+				path->push_back(x->left);
+			}
+			else {
+				Node* value;
+				value = t.top();
+				std::cout << value->val << " ";
+				t.pop();
+			}
+			if(t.empty() == false)
+				x = t.top();
+		}
+	}
+
+	void parcurgerePreordine() {
+		std::cout << "Parcurgere in Preordine:\n";
+		path->erase(path->begin(),path->end());
+		path->push_back(tree);
+		std::vector<Node*> rezultat;
+		Node* x = tree;
+		rezultat.push_back(x);
+		std::cout << rezultat.back()->val << " ";
+		while (rezultat.empty() == false) {
+			if (x->left != NULL && (verificare(x->left) == false)) {
+				path->push_back(x->left);
+				rezultat.push_back(x->left);
+				x = rezultat.back();
+				std::cout << rezultat.back()->val << " ";
+			}
+			else {
+				if (x->right != NULL && (verificare(x->right) == false)) {
+					path->push_back(x->right);
+					rezultat.push_back(x->right);
+					std::cout << rezultat.back()->val << " ";
+				}
+				else {
+					rezultat.pop_back();
+				}
+			}
+			if (rezultat.empty() == false)
+				x = rezultat.back();
+		}
+	}
+
+	void parcurgereInordine() {
+		path->erase(path->begin(), path->end());
+		path->push_back(tree);
+		std::cout << "Parcurgere in Inordine:\n";
+		std::stack<Node*> rezultat;
+		rezultat.push(tree);
+		Node* x;
+		x = tree;
+		while (rezultat.empty() == false) {
+			if (x->left != NULL && (verificare(x->left) == false)) {
+				rezultat.push(x->left);
+				path->push_back(x->left);
+			}
+			else {
+				std::cout << rezultat.top()->val << " ";
+				if (x->right != NULL && verificare(x->right) == false) {
+					path->push_back(x->right);
+					rezultat.push(x->right);
+				}
+				else {
+					rezultat.pop();
+				}
+			}
+			if(rezultat.empty() == false)
+				x = rezultat.top();
+		}
+	}
 };
+
+bool BTree::verificare(Node *x){
+	if (std::find(path->begin(), path->end(), x) != path->end())
+		return true;
+	else
+		return false;
+}
 
 void main() {
 	int t[10]{ 8,4,7,3,2,10,22,9 };
 	int n = 7;
 	BTree tree(t, n);
+	tree.parcurgerePostordine();
+	std::cout << std::endl;
+	tree.parcurgerePreordine();
+	std::cout << std::endl;
+	tree.parcurgereInordine();
 	std::cout << std::endl;
 	system("pause");
 }
