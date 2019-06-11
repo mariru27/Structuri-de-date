@@ -1,0 +1,100 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <string.h>
+
+char t[30][20]{ 
+		"john",
+		"tzha",
+		"fyau",
+		"ctai",
+		"nbal",
+		"ddix",
+		"sgou",
+		"azhu",
+		"aviv",
+		"sida",
+		"kuan",
+		"vyas",
+		"oleg",
+		"lvey",
+		"kwak",
+		"muir",
+		"peck",
+		"ravi",
+		"alan",
+		"yort",
+		"azhu",
+		"andy",
+		"anna",
+		"lily" 
+};
+int n = 24;
+
+void print(char **s) {
+	for (int i = 0; i < n; i++) {
+		std::cout << i<< " -  " << s[i] << std::endl;
+	}
+	//std::cout << "-------------";
+}
+
+void selectionSort() {
+	char **s;
+	s = new char* [30];
+	for (int i = 0; i <= 30; i++) {
+		s[i] = new char[20];
+	}
+	for (int i = 0; i < n; i++) {
+		strcpy(s[i], t[i]);
+	}
+	char word[20];
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i; j < n; j++) {
+			if (strcmp(s[i], s[j]) > 0) {
+				strcpy(word, s[i]);
+				strcpy(s[i], s[j]);
+				strcpy(s[j], word);
+			}
+		}
+		//std::cout << "\n-----------------\n" << i << "\n--------------\n";
+		//print(s);
+	}
+}
+
+void bubbleSort() {
+	char** s;
+	s = new char* [30];
+	for (int i = 0; i <= 30; i++) {
+		s[i] = new char[20];
+	}
+	for (int i = 0; i < n; i++) {
+		strcpy(s[i], t[i]);
+	}
+	char word[20];
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n - 1; j++) {
+			if (strcmp(s[j], s[j + 1]) > 0) {
+				strcpy(word, s[j]);
+				strcpy(s[j], s[j + 1]);
+				strcpy(s[j + 1], word);
+			}
+		}
+		//std::cout << "\n-----------------\n" << i << "\n--------------\n";
+	 //   print(s);
+	}
+}
+
+void insertionSort() {
+
+}
+
+void main() {
+	selectionSort();
+	bubbleSort();
+	std::cout << std::endl;
+	system("pause");
+}
