@@ -33,6 +33,18 @@ char t[30][20]{
 		"lily" 
 };
 int n = 24;
+char** s;
+
+void vectorNesoratat() {
+//	char** s;
+	s = new char* [30];
+	for (int i = 0; i <= 30; i++) {
+		s[i] = new char[20];
+	}
+	for (int i = 0; i < n; i++) {
+		strcpy(s[i], t[i]);
+	}
+}
 
 void print(char **s) {
 	for (int i = 0; i < n; i++) {
@@ -88,13 +100,159 @@ void bubbleSort() {
 	}
 }
 
-void insertionSort() {
+void insertionSort(){
+	char** s;
+	s = new char* [30];
+	for (int i = 0; i <= 30; i++) {
+		s[i] = new char[20];
+	}
+	for (int i = 0; i < n; i++) {
+		strcpy(s[i], t[i]);
+	}
+	char word[20];
 
+	int i, key, j;
+	for (i = 1; i < n; i++){
+		strcpy(word, s[i]);
+		j = i - 1;
+
+
+		while (j>=0 && strcmp(s[j],word) > 0){
+			strcpy(s[j + 1], s[j]);
+			j = j - 1;
+		}
+		strcpy(s[j + 1], word);
+	}
+
+	print(s);
 }
 
+int partition(char **s, int low, int high){
+	char pivot[20];
+	char word[20];
+	strcpy(pivot, s[high]);
+	int i = (low - 1);  
+
+	for (int j = low; j <= high - 1; j++){
+
+		if (strcmp(s[j],pivot) < 0){
+			i++;    
+			strcpy(word, s[i]);
+			strcpy(s[i], s[j]);
+			strcpy(s[j], word);
+		}
+	}
+	strcpy(word, s[i + 1]);
+	strcpy(s[i + 1], s[high]);
+	strcpy(s[high], word);
+	return (i + 1);
+}
+
+void quickSort(char **s, int low, int high){
+	if (low < high){
+
+		int pi = partition(s, low, high);
+		//static int i = -1;
+		//i++;
+		//std::cout << "\n-----------------\n" << i << "\n--------------\n";
+		quickSort(s, low, pi - 1);
+		quickSort(s, pi + 1, high);
+	}
+}
+
+void merge(char **s, int l, int m, int r){
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
+
+	char L[30][30];
+	char R[30][30];
+
+	for (i = 0; i < n1; i++)
+		strcpy(L[i], s[l + i]);
+	
+	for (j = 0; j < n2; j++)
+		strcpy(R[j], s[m + 1 + j]);
+		
+
+	i = 0;
+	j = 0; 
+	k = l; 
+	while (i < n1 && j < n2){
+		if (strcmp(L[i],R[j]) <= 0){
+			strcpy(s[k], L[i]);
+			i++;
+		}
+		else{
+
+			strcpy(s[k], R[j]);
+			j++;
+		}
+		k++;
+	}
+
+	while (i < n1){
+		strcpy(s[k], L[i]);
+		i++;
+		k++;
+	}
+
+	while (j < n2){
+		strcpy(s[k], R[j]);
+		j++;
+		k++;
+	}
+}
+
+void mergeSort(char **s, int l, int r){
+	if (l < r){ 
+		int m = l + (r - l) / 2;
+
+		mergeSort(s, l, m);
+		mergeSort(s, m + 1, r);
+
+		merge(s, l, m, r);
+		//static int i = -1;
+		//i++;
+		//std::cout << "\n-----------------\n" << i << "\n--------------\n"; 
+       print(s);
+	}
+	
+}
+
+
+void ShellSort(char **s, int n){
+	int i, j, k, temp;
+	for (i = n / 2; i > 0; i = i / 2){
+		for (j = i; j < n; j++){
+			for (k = j - i; k >= 0; k = k - i){
+				if (strcmp(s[k+i],s[k])>0)
+					break;
+				else{
+					char word[20];
+					strcpy(word, s[k]);
+					strcpy(s[k], s[k + i]);
+					strcpy(s[k + i], word);
+				}
+			}
+		}
+	}
+}
+
+
 void main() {
-	selectionSort();
-	bubbleSort();
+	//selectionSort();
+	//bubbleSort();
+	
+	/*vectorNesoratat();
+	quickSort(s, 0, n-1);*/
+
+	//vectorNesoratat();
+	//mergeSort(s, 0, n - 1);
+
+	vectorNesoratat();
+	ShellSort(s, n - 1);
+	//print(s);
 	std::cout << std::endl;
 	system("pause");
 }
