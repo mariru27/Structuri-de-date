@@ -1,0 +1,89 @@
+#include <iostream>
+#include <conio.h>
+
+class Snacke {
+protected:
+	struct snk {
+		int xsnake;
+		int ysnake;
+	};
+	int nr;
+	snk *snake;
+public:
+	Snacke() {
+		nr = -1;
+		snake = new snk[100]{};
+	}
+	bool valuesDoNotCoincide(int x, int y) {};
+	bool valuesAreNotEqual(int x, int y) {};
+};
+
+bool Snacke::valuesAreNotEqual(int x, int y) {
+	if (nr > -1) {
+		if (snake->xsnake == x && snake->ysnake == y) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Snacke::valuesDoNotCoincide(int x, int y){
+	if (nr > -1) {
+		for (int i = 0; i <= nr; i++) {
+			if (snake->xsnake == x && snake->ysnake == y)
+				return false;
+		}
+	}
+	return true;
+}
+
+class Fruit {
+protected:
+	int xfruit;
+	int yfruit;
+public:
+	Fruit() {
+		xfruit = 0;
+		yfruit = 0;
+	}
+	void random() {
+
+	}
+};
+
+class BordTable:public Snacke, public Fruit {
+	int lives;
+	int points;
+	bool gameOver;
+public:
+	BordTable() {
+		gameOver = false;
+		lives = 0;
+		points = 0;
+	}
+	void move() {};
+};
+
+void BordTable::move() {
+	while (gameOver == false) {
+		if (kbhit()) {
+			char key = getch();
+			switch (key) {
+			case 'a': {
+				if ((snake->xsnake - 1 >= 0) && valuesAreNotEqual(snake->xsnake - 1 , snake->ysnake) == true && valuesDoNotCoincide(snake->xsnake - 1, snake->ysnake) == true) {
+					refreshArray();
+				}
+				else
+					gameOver = true;
+				
+			}
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void main() {
+	system("pause");
+}
