@@ -12,6 +12,7 @@ private:
 	};
 	Node* tree;
 	int n;
+	std::vector<Node*> afisat[20];
 	std::vector<Node*> path[20];
 public:
 	BTree(int* t, int n) {
@@ -55,7 +56,8 @@ public:
 		}
 	}
 
-	bool verificare(Node *x);
+	bool verificare(Node* x);
+	bool verificareAfisat(Node* x);
 
 	void parcurgerePostordine() {
 		std::cout << "Parcurgere in Postordine:\n";
@@ -63,11 +65,11 @@ public:
 		t.push(tree);
 		Node* x = tree;
 		while (t.empty() == false) {
-			if (x->right != NULL && (verificare(x->right) == false) ) {
+			if (x->right != NULL && (verificare(x->right) == false)) {
 				t.push(x->right);
 				path->push_back(x->right);
 			}
-			if (x->left != NULL && (verificare(x->left) == false) ) {
+			if (x->left != NULL && (verificare(x->left) == false)) {
 				t.push(x->left);
 				path->push_back(x->left);
 			}
@@ -77,19 +79,19 @@ public:
 				std::cout << value->val << " ";
 				t.pop();
 			}
-			if(t.empty() == false)
+			if (t.empty() == false)
 				x = t.top();
 		}
 	}
 
 	void parcurgerePreordine() {
 		std::cout << "Parcurgere in Preordine:\n";
-		path->erase(path->begin(),path->end());
+		path->erase(path->begin(), path->end());
 		path->push_back(tree);
 		std::vector<Node*> rezultat;
 		Node* x = tree;
 		rezultat.push_back(x);
-		std::cout << rezultat.back()->val << " ";
+
 		while (rezultat.empty() == false) {
 			if (x->left != NULL && (verificare(x->left) == false)) {
 				path->push_back(x->left);
@@ -125,8 +127,13 @@ public:
 				rezultat.push(x->left);
 				path->push_back(x->left);
 			}
-			else {
-				std::cout << rezultat.top()->val << " ";
+			else 
+			{
+				if (verificareAfisat(x) == false) {
+					std::cout << rezultat.top()->val << " ";
+				}
+				afisat->push_back(rezultat.top());
+
 				if (x->right != NULL && verificare(x->right) == false) {
 					path->push_back(x->right);
 					rezultat.push(x->right);
@@ -135,14 +142,21 @@ public:
 					rezultat.pop();
 				}
 			}
-			if(rezultat.empty() == false)
+			if (rezultat.empty() == false)
 				x = rezultat.top();
 		}
 	}
 };
 
-bool BTree::verificare(Node *x){
+bool BTree::verificare(Node* x) {
 	if (std::find(path->begin(), path->end(), x) != path->end())
+		return true;
+	else
+		return false;
+}
+
+bool BTree::verificareAfisat(Node* x) {
+	if(std::find(afisat->begin(), afisat->end(), x) != afisat->end())
 		return true;
 	else
 		return false;
